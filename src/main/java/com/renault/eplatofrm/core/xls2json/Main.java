@@ -13,6 +13,7 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.get.GetField;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node;
+import org.elasticsearch.search.facet.termsstats.TermsStatsFacetBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,12 +84,17 @@ public class Main {
             GetResponse response = client.prepareGet("faq-ze", "category", "14")
                     .execute()
                     .actionGet();
-//            for (Map.Entry<String, GetField> entry : response.getFields().entrySet()) {
-//
-//            }
             response = client.prepareGet("faq-ze", "question", "3")
                 .execute()
                 .actionGet();
+
+            //SearchResponse searchResponse = client.prepareSearch("faq-ze").
+
+            client.close();
+        } else if (args[0].equalsIgnoreCase("--facets")) {
+            Client client = new TransportClient()
+                .addTransportAddress(new InetSocketTransportAddress("192.168.6.159", 9302));
+            SearchResponse response = client.prepareSearch("faq-ze").setTypes("question").addFacet(new TermsStatsFacetBuilder("category-facet").keyField("categoryTitle").valueField("categoryTitle")).execute().actionGet();
 
             //SearchResponse searchResponse = client.prepareSearch("faq-ze").
 

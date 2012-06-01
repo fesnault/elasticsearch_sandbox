@@ -14,24 +14,10 @@ public class JsonObjectFactory {
     private JsonObjectFactory() {}
 
     public static JsonObject createJsonObject(Map<String, String> data, String indexName) {
-        if (indexName.equalsIgnoreCase("Categories")) {
-            return createJsonCategory(data);
-        } else if (indexName.equalsIgnoreCase("Questions")) {
+        if (indexName.equalsIgnoreCase("Questions")) {
             return createJsonQuestion(data);
         }
         return null;
-    }
-
-    private static JsonCategory createJsonCategory(Map<String, String> data) {
-        String id = data.get("category_id");
-        String name = data.get("category_title");
-        if (id == null || name == null) {
-            return null;
-        }
-        JsonCategory category = new JsonCategory();
-        category.setId(Integer.parseInt(id));
-        category.setName(name);
-        return category;
     }
 
     private static JsonQuestion createJsonQuestion(Map<String, String> data) {
